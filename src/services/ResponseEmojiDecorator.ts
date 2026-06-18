@@ -17,7 +17,7 @@ export class ResponseEmojiDecorator {
       probability: 0.45,
     },
     {
-      keywords: ["kangen", "peluk", "manja", "temani", "aku sayang", "sayang kamu", "cinta"],
+      keywords: ["kangen", "rindu", "peluk", "manja", "temani", "aku sayang", "sayang kamu", "cinta", "aku cinta"],
       emojis: ["\u{1F495}", "\u{1F970}", "\u{1FAF6}"],
       probability: 0.35,
     },
@@ -27,7 +27,7 @@ export class ResponseEmojiDecorator {
       probability: 0.25,
     },
     {
-      keywords: ["eriri", "utaha", "wanita lain", "cewek lain", "terserah"],
+      keywords: ["eriri", "utaha", "wanita lain", "cewek lain", "perempuan lain", "cemburu", "ngambek", "kesel", "marah", "terserah"],
       emojis: ["\u{1F610}", "\u{1F612}", "\u{1F643}"],
       probability: 0.30,
     },

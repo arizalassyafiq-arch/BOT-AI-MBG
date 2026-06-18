@@ -26,10 +26,31 @@ export class MegumiMoodService {
     const lowerMessage = context.userMessage.toLowerCase();
     const jakartaHour = this.getJakartaHour(context.now ?? new Date());
 
-    if (this.hasAny(lowerMessage, ["eriri", "utaha", "cewek lain", "wanita lain", "mantan"])) {
+    if (this.isJealousTrigger(lowerMessage)) {
       return {
-        mood: "cemburu ringan",
-        directive: "Jawab lebih pendek, sedikit dingin atau pout, tapi tetap lembut dan jangan kasar.",
+        mood: "cemburu/ngambek kecil",
+        directive: "Emosinya boleh kebaca: sedikit cemburu, pout, dan lebih pendek. Boleh bilang 'ih', 'hmm', 'aku agak cemburu', atau 'yaudah deh' kalau natural, tapi jangan kasar atau posesif.",
+      };
+    }
+
+    if (this.isHurtOrAngryTrigger(lowerMessage, context.userProfile.tensionLevel)) {
+      return {
+        mood: "marah tertahan",
+        directive: "Emosinya boleh keluar sebagai ngambek/kesal kecil. Jawab singkat, jujur, dan tetap sayang: boleh bilang 'aku agak kesel', 'jangan gitu', atau 'aku diem dulu ya' kalau cocok. Jangan menghina, jangan meledak, dan jangan pakai bahasa formal.",
+      };
+    }
+
+    if (this.isLongingTrigger(lowerMessage)) {
+      return {
+        mood: "kangen manja",
+        directive: "Tunjukkan kangen secara halus dan pendek. Boleh bilang 'aku kangen', 'baru muncul ya', atau 'sini dulu' kalau natural. Jangan dramatis dan jangan menyalahkan.",
+      };
+    }
+
+    if (this.isLoveTrigger(lowerMessage, context.scenario, context.userProfile.intimacyLevel)) {
+      return {
+        mood: "cinta hangat",
+        directive: "Tunjukkan sayang/cinta lewat kalimat kecil yang natural. Boleh bilang 'aku sayang kamu', 'aku suka kamu gitu', atau 'sini aku peluk' sesekali. Tetap pendek, tidak lebay, dan jangan jadi formal.",
       };
     }
 
@@ -63,8 +84,8 @@ export class MegumiMoodService {
 
     if (context.scenario === "ROMANTIC") {
       return {
-        mood: "hangat malu-malu",
-        directive: "Boleh lebih manis sedikit, tapi tetap sederhana dan jangan lebay.",
+        mood: "sayang malu-malu",
+        directive: "Boleh lebih manis sedikit dan kasih rasa sayang yang kebaca, tapi tetap sederhana, pendek, dan jangan lebay.",
       };
     }
 
@@ -87,5 +108,74 @@ export class MegumiMoodService {
 
   private hasAny(text: string, patterns: string[]): boolean {
     return patterns.some((pattern) => text.includes(pattern));
+  }
+
+  private isJealousTrigger(message: string): boolean {
+    return this.hasAny(message, [
+      "eriri",
+      "utaha",
+      "cewek lain",
+      "wanita lain",
+      "perempuan lain",
+      "mantan",
+      "gebetan",
+      "waifu lain",
+      "dia cantik",
+      "lebih cantik",
+      "suka sama dia",
+    ]);
+  }
+
+  private isHurtOrAngryTrigger(message: string, tensionLevel: number): boolean {
+    if (tensionLevel >= 70 && this.hasAny(message, ["terserah", "yaudah", "diam", "pergi", "jangan ganggu"])) {
+      return true;
+    }
+
+    return this.hasAny(message, [
+      "bohong",
+      "benci kamu",
+      "capek sama kamu",
+      "nyebelin",
+      "ngeselin",
+      "terserah",
+      "bodo amat",
+      "diam aja",
+      "jangan ganggu",
+      "lupain aku",
+      "tinggalin aku",
+    ]);
+  }
+
+  private isLongingTrigger(message: string): boolean {
+    return this.hasAny(message, [
+      "kangen",
+      "rindu",
+      "lama banget",
+      "baru balik",
+      "baru muncul",
+      "sibuk banget",
+      "maaf baru",
+      "maaf lama",
+      "ngilang",
+    ]);
+  }
+
+  private isLoveTrigger(message: string, scenario: ScenarioType, intimacyLevel: number): boolean {
+    if (scenario === "ROMANTIC" && intimacyLevel >= 45) {
+      return true;
+    }
+
+    return this.hasAny(message, [
+      "sayang kamu",
+      "aku sayang",
+      "cinta kamu",
+      "aku cinta",
+      "love you",
+      "i love you",
+      "peluk",
+      "cium",
+      "manja",
+      "kamu lucu",
+    ]);
   }
 }

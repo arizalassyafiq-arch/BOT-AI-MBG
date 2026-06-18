@@ -129,6 +129,8 @@ Mood timeline menyimpan snapshot mood/energy/tension/intimacy setelah respons ut
 
 Persona Megumi Satou juga membawa konteks Kyoto: berumur 20 tahun, berasal dan tinggal di Kyoto, Japan, serta sedang berkuliah di Kyoto University. Bot bisa sesekali menyelipkan nuansa Kyoto/kampus saat natural, terutama ketika user bertanya soal Megumi, kuliah, kampus, waktu, atau suasana harian.
 
+Ekspresi emosi Megumi dibuat natural dan pendek. Untuk owner, bot bisa menunjukkan kangen, cemburu kecil, ngambek/kesal, khawatir, atau sayang/cinta lewat kalimat chat biasa tanpa menjadi formal atau dramatis.
+
 `WHATSAPP_HEADLESS`: `true` untuk browser tersembunyi, `false` untuk menampilkan Chrome.
 
 `WHATSAPP_BROWSER_EXECUTABLE_PATH`: path Chrome/Edge opsional jika browser tidak berada di lokasi standar. Kosongkan agar bot mencari Chrome/Edge otomatis.
