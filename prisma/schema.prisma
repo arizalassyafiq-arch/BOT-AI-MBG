@@ -1,0 +1,86 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String    @id @default(uuid())
+  whatsappId     String    @unique
+  name           String?
+  isVerifiedOwner Boolean  @default(false)
+  mood           String    @default("netral")
+  intimacyLevel  Int       @default(10) // Skala keintiman/kedekatan (1-100)
+  trustLevel     Int       @default(50)
+  tensionLevel   Int       @default(0)
+  energyLevel    Int       @default(50)
+  familiarityLevel Int     @default(0)
+  relationshipPhase String @default("stranger")
+  responseMode   String    @default("auto")
+  lastTopic      String?
+  openLoop       String?
+  userPreferredTone String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  messages       Message[]
+  memories       UserMemory[]
+  moodTimeline   MoodTimelineEntry[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  sender     String   // "user" atau "bot"
+  content    String
+  timestamp  DateTime @default(now())
+
+  @@index([userId, timestamp])
+}
+
+model UserMemory {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  type        String
+  value       String
+  confidence  Int      @default(70)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, type, value])
+  @@index([userId, type])
+}
+
+model MoodTimelineEntry {
+  id                 Int      @id @default(autoincrement())
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  mood               String
+  scenario           String?
+  energyLevel        Int
+  trustLevel         Int
+  tensionLevel       Int
+  intimacyLevel      Int
+  userMessagePreview String?
+  createdAt          DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, mood])
+}
+
+model VerifiedOwner {
+  id          String   @id @default(uuid())
+  whatsappId  String   @unique
+  source      String   @default("verify_code")
+  createdAt   DateTime @default(now())
+}
+
+model OwnerVerificationClaim {
+  codeHash            String   @id
+  claimedByWhatsappId String
+  claimedAt           DateTime @default(now())
+}

@@ -1,0 +1,41 @@
+{
+  "name": "whatsapp-partner-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp Virtual Life Partner Bot using whatsapp-web.js and OpenAI API",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "check": "npm run build",
+    "start": "node dist/app.js",
+    "start:dev": "npm run dev",
+    "dev": "ts-node src/app.ts",
+    "setup": "npm install && npm run db:generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "prisma:generate": "npm run db:generate",
+    "prisma:migrate": "npm run db:migrate",
+    "clean:browser": "node scripts/close-whatsapp-browser.js",
+    "clean:session": "npm run clean:browser && node scripts/clean-whatsapp-state.js --auth",
+    "clean:cache": "node scripts/clean-whatsapp-state.js --cache",
+    "clean:whatsapp": "npm run clean:browser && node scripts/clean-whatsapp-state.js",
+    "dev:reset": "npm run clean:whatsapp && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.47.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@types/qrcode-terminal": "^0.12.2",
+    "prisma": "^5.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

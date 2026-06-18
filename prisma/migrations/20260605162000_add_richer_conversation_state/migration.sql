@@ -1,0 +1,5 @@
+ALTER TABLE "User" ADD COLUMN "familiarityLevel" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "User" ADD COLUMN "relationshipPhase" TEXT NOT NULL DEFAULT 'stranger';
+ALTER TABLE "User" ADD COLUMN "lastTopic" TEXT;
+ALTER TABLE "User" ADD COLUMN "openLoop" TEXT;
+ALTER TABLE "User" ADD COLUMN "userPreferredTone" TEXT;

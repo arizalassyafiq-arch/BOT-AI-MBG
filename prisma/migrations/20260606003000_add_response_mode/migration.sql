@@ -1,0 +1,1 @@
+ALTER TABLE "User" ADD COLUMN "responseMode" TEXT NOT NULL DEFAULT 'auto';
